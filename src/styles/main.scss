@@ -14,10 +14,11 @@ $hover-move: 20px;
 $transition-time: 0.5s;
 
 .calendar {
-  display: grid;
-  grid-template-columns: repeat($calendar-columns, $day-size);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: $gap-size;
-  width: ($calendar-columns * $day-size + ($calendar-columns - 1) * $gap-size);
+  width: ($calendar-columns * $day-size + ($calendar-columns - 1) * $gap-size + $calendar-padding * 2);
   margin: auto;
   padding: $calendar-padding;
   position: absolute;
@@ -45,10 +46,6 @@ $transition-time: 0.5s;
   }
 }
 
-.calendar__day:nth-child(1) {
-  grid-column: $calendar-columns;
-}
-
 @for $i from 1 through 31 {
   .calendar__day:nth-child(#{$i})::before {
     content: '#{$i}';
@@ -58,5 +55,11 @@ $transition-time: 0.5s;
 @for $len from 28 through 31 {
   .calendar--month-length--#{$len} .calendar__day:nth-child(n + #{$len + 1}) {
     display: none;
+  }
+}
+
+@each $day, $index in (sun: 1, mon: 2, tue: 3, wed: 4, thu: 5, fri: 6, sat: 7) {
+  .calendar--start-day--#{$day} .calendar__day:nth-child(1) {
+    margin-left: (($index - 1) * ($day-size + $gap-size));
   }
 }
